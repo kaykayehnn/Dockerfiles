@@ -2,7 +2,7 @@
 # This script attempts to find the most appropriate tini version depending on
 # the container properties (CPU architecture and distro).
 
-set -euo pipefail
+set -eu
 
 TINI_VERSION="${TINI_VERSION:-v0.19.0}"
 
