@@ -8,7 +8,7 @@ TINI_VERSION="${TINI_VERSION:-v0.19.0}"
 
 # The user can specify the TINI_RELEASE variable to manually pick which version
 # of tini they want to use.
-if [ -z "${TINI_RELEASE}" ]; then
+if [ -z "${TINI_RELEASE-}" ]; then
   # This switch case statement is incomplete, though it should cover the majority
   # of use cases. PRs to improve it are very welcome
   case "$(uname -m)" in
@@ -18,7 +18,8 @@ if [ -z "${TINI_RELEASE}" ]; then
     cpu_architecture="amd64";;
   esac
 
-  if [ "${TINI_STATIC}" = "1" ] || [ "${TINI_STATIC}" = "true" ]; then
+  static=""
+  if [ "${TINI_STATIC-}" = "1" ] || [ "${TINI_STATIC-}" = "true" ]; then
     static="-static"
   fi
 
@@ -34,10 +35,11 @@ wget -q "$downloadUrl.asc" -O /tini.asc
 
 # PRs to extend this list are also welcome
 if [ "$ID" = "alpine" ]; then
-  apk add --no-cache gnupg \
-    && gpg --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 \
-    && gpg --batch --verify /tini.asc /tini \
-    && chmod +x /tini
+  apk add --no-cache gnupg
 elif [ "$ID" = "debian" ] || [ "$ID" = "ubuntu" ]; then
-
+  apt-get update && apt-get install -y gnupg
 fi
+
+gpg --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 \
+  && gpg --batch --verify /tini.asc /tini \
+  && chmod +x /tini
