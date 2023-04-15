@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 
 # Add Tini
 ENV TINI_VERSION v0.19.0
@@ -24,7 +24,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 
 # Setup Tini
 COPY --from=build-env /tini /
@@ -34,4 +34,5 @@ WORKDIR /app
 # Copy app files
 COPY --from=build-env /app/out .
 
-CMD [ "dotnet", "$PROJECT_NAME.dll" ]
+# Change this to your project name
+CMD [ "dotnet", "_NET.dll" ]
