@@ -6,6 +6,8 @@ set -eu
 
 TINI_VERSION="${TINI_VERSION:-v0.19.0}"
 
+. /etc/os-release
+
 # The user can specify the TINI_RELEASE variable to manually pick which version
 # of tini they want to use.
 if [ -z "${TINI_RELEASE-}" ]; then
@@ -19,14 +21,14 @@ if [ -z "${TINI_RELEASE-}" ]; then
   esac
 
   static=""
-  if [ "${TINI_STATIC-}" = "1" ] || [ "${TINI_STATIC-}" = "true" ]; then
+  # Alpine Linux doesn't work with the dynamically linked version so we use the
+  # static one.
+  if [ "${TINI_STATIC-}" = "1" ] || [ "${TINI_STATIC-}" = "true" ] || [ "$ID" = "alpine" ]; then
     static="-static"
   fi
 
   TINI_RELEASE="tini${static:-}-${cpu_architecture}"
 fi
-
-. /etc/os-release
 
 downloadUrl="https://github.com/krallin/tini/releases/download/${TINI_VERSION}/${TINI_RELEASE}"
 
