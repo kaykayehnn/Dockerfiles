@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# shellcheck shell=sh
 # This script attempts to find the most appropriate tini version depending on
 # the container properties (CPU architecture and distro).
 
@@ -6,6 +7,7 @@ set -eu
 
 TINI_VERSION="${TINI_VERSION:-v0.19.0}"
 
+# shellcheck source=/dev/null
 . /etc/os-release
 
 # The user can specify the TINI_RELEASE variable to manually pick which version
