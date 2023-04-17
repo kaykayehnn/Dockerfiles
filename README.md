@@ -1,7 +1,10 @@
 # Dockerfiles
 
-This repo is a collection of Dockerfiles for various languages and technologies.
+This repo is a collection of Dockerfiles for various languages and technologies. The images aim to provide a plug-and-play environment for using in your own projects.
 
-### What you should know before using any of this
+You can either copy-paste the Dockerfiles in your repo, or base your own Dockerfile on the pre-built images:
 
-- Some configurations contain variables, which have to be set manually on a project-per-project basis. You can find them by [grepping](https://en.wikipedia.org/wiki/Grep) for `$`.
+```Dockerfile
+FROM ghcr.io/kaykayehnn/dockerfiles/net:main
+...
+```
