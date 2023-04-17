@@ -24,10 +24,10 @@ jobs:
     permissions:
       contents: read
       packages: write
-    
+
     strategy:
       matrix:
-        image: ["_NET", "Java", "Node.js", "Shell"]
+        imageDirectory: ["_NET", "Java", "Node.js", "Shell"]
 
     steps:
       - name: Checkout repository
@@ -40,16 +40,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set env
+        run: echo "IMAGE_NAME=$(echo ${{ matrix.imageDirectory }} | sed 's/^_//')" >> $GITHUB_ENV
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: ${{ matrix.image }}
+          context: ${{ matrix.imageDirectory }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
