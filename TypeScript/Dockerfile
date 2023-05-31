@@ -23,7 +23,7 @@ ENTRYPOINT ["/tini", "--"]
 
 ENV NODE_ENV=production
 
-COPY --from=build-env /usr/src/myapp /
+COPY --from=build-env /usr/src/myapp /usr/src/myapp
 WORKDIR /usr/src/myapp
 
 RUN npm install --omit=dev
