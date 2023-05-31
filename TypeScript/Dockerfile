@@ -26,7 +26,7 @@ ENV NODE_ENV=production
 COPY --from=build-env /usr/src/myapp /
 WORKDIR /usr/src/myapp
 
-RUN npm
+RUN npm install --omit=dev
 
 USER node
 CMD ["node", "dist/index.js"]
