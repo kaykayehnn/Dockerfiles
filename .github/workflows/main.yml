@@ -27,7 +27,7 @@ jobs:
 
     strategy:
       matrix:
-        imageDirectory: ["_NET", "Java", "Node.js", "Shell"]
+        imageDirectory: ["_NET", "Java", "Node.js", "Shell", "TypeScript"]
 
     steps:
       - name: Checkout repository
